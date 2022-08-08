@@ -1,11 +1,12 @@
-import './App.css'
+import React from 'react';
+
+import './App.css';
+import Board from './components/board';
 
 function App() {
-
   return (
-    <h1>Hello Word</h1>
-  )
-
+    <Board />
+  );
 }
 
-export default App
+export default App;
