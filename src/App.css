@@ -18,3 +18,9 @@ html, body, #root {
   background-color: #242424;
   color: #fff;
 }
+
+#root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
