@@ -1,28 +1,48 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { House, Line } from './styles';
+import playContext from '../../context/playContext';
+import piece from '../../services/piece';
+import { House, LayoutGrid } from './styles';
 
 function Board() {
-  const lines = [1, 2, 3, 4, 5, 6, 7, 8];
-  const coluns = [0, 1, 2, 3, 4, 5, 6, 7];
+  const { handleLocalPiece } = useContext(playContext);
+  const table = [
+    't', 'c', 'b', 'q', 'k', 'b', 'c', 't',
+    'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p',
+    ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
+    ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
+    ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
+    ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
+    'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P',
+    'T', 'C', 'B', 'K', 'Q', 'B', 'C', 'T',
+  ];
+
+  const isCapsLock = (text) => text.toUpperCase() === text;
+
+  const handleClick = (id) => {
+    handleLocalPiece(id);
+  };
+
+  let isWhite = false;
 
   return (
-    <>
-      {lines.map((line) => (
-        <Line key={uuidv4()}>
-          {coluns.map((colun) => {
-            console.log(colun + line);
-            return (
-              <House
-                key={uuidv4()}
-                isWhite={(colun + line) % 2 === 0}
-                id={`${line} ${colun}`}
-              />
-            );
-          })}
-        </Line>
-      ))}
-    </>
+    <LayoutGrid>
+      {
+      table.map((house, index) => {
+        isWhite = index % 8 === 0 ? isWhite : !isWhite;
+        return (
+          <House
+            key={uuidv4()}
+            isWhite={!isWhite}
+            onClick={handleClick}
+            isPieceWhite={isCapsLock(house)}
+          >
+            {piece[house]}
+          </House>
+        );
+      })
+}
+    </LayoutGrid>
   );
 }
 
