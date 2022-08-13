@@ -24,8 +24,11 @@ function Board() {
     localPiece,
   } = useContext(playContext);
   const [table, setTable] = useState(INITIAL_TABLE);
+  const [turn, setTurn] = useState('w');
 
-  const possibleMove = [localPiece + 7, localPiece + 9, localPiece - 7, localPiece - 9];
+  const toggleTrun = () => turn === 'w' ? setTurn('b') : setTurn('w');
+
+  const possibleMoves = [localPiece + 7, localPiece + 9, localPiece - 7, localPiece - 9];
 
   const isCapsLock = (text) => text.toUpperCase() === text;
 
@@ -41,10 +44,13 @@ function Board() {
     return newArray;
   };
 
-  function move(id, _piece) {
+  const move = (id, _piece) => {
     const newTable = moveArrayElement(table, +(localPiece), +(id));
-    if (possibleMove.includes(id) && !_piece.trim()) setTable(newTable);
-  }
+    if (possibleMoves.includes(id) && !_piece.trim()) {
+      setTable(newTable);
+      toggleTrun();
+    }
+  };
 
   const handleClick = (id, _piece) => {
     if (id !== localPiece && selectedPiece.trim()) {
@@ -52,7 +58,7 @@ function Board() {
       moveReset();
     } else if (selectedPiece === _piece) {
       moveReset();
-    } else {
+    } else if (turn === _piece) {
       handleLocalPiece(id);
       handleSelectedPiece(_piece);
     }
