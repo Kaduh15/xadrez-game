@@ -13,12 +13,16 @@ export const LayoutGrid = styled.div`
 `;
 
 export const House = styled.div`
-  background-color: ${(props) => (props.isWhite ? '#d6d6d6' : '#616161')};
+  background-color: ${({ isWhite, selected }) => {
+    if (selected) return '#7bc';
+    if (isWhite) return '#d7d7';
+    return '#7171';
+  }};
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 5rem;
-  color: ${(props) => (props.isPieceWhite ? '#000' : '#fff')};
+  color: #fff111;
   width: 5rem;
   height: 5rem;
   cursor: pointer;

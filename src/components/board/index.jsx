@@ -5,14 +5,14 @@ import piece from '../../services/piece';
 import { House, LayoutGrid } from './styles';
 
 const INITIAL_TABLE = [
-  't', 'c', 'b', 'q', 'k', 'b', 'c', 't',
-  'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p',
+  't1', 'c1', 'b1', 'q', 'k', 'b2', 'c2', 't2',
+  'p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8',
   ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
   ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
   ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
   ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
-  'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P',
-  'T', 'C', 'B', 'K', 'Q', 'B', 'C', 'T',
+  'P1', 'P2', 'P3', 'P4', 'P5', 'P6', 'P7', 'P8',
+  'T1', 'C1', 'B1', 'K', 'Q', 'B2', 'C2', 'T2',
 ];
 
 function Board() {
@@ -67,8 +67,9 @@ function Board() {
             isWhite={!isWhite}
             onClick={() => handleClick(index, house)}
             isPieceWhite={isCapsLock(house)}
+            selected={selectedPiece === house && localPiece === index}
           >
-            {piece[house]}
+            {piece[house[0]]}
           </House>
         );
       })
