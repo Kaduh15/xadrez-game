@@ -22,6 +22,7 @@ export const House = styled.div`
   justify-content: center;
   align-items: center;
   font-size: 4rem;
+  color: #666;
   width: 5rem;
   height: 5rem;
   cursor: pointer;

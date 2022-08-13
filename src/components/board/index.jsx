@@ -25,9 +25,11 @@ function Board() {
   } = useContext(playContext);
   const [table, setTable] = useState(INITIAL_TABLE);
 
+  const possibleMove = [localPiece + 7, localPiece + 9, localPiece - 7, localPiece - 9];
+
   const isCapsLock = (text) => text.toUpperCase() === text;
 
-  function moveArrayElement(arr, from, to) {
+  const moveArrayElement = (arr, from, to) => {
     const newArray = [...arr];
     const el = newArray[from];
     const el2 = newArray[to];
@@ -37,12 +39,16 @@ function Board() {
     newArray.splice(to, 0, el);
 
     return newArray;
+  };
+
+  function move(id, _piece) {
+    const newTable = moveArrayElement(table, +(localPiece), +(id));
+    if (possibleMove.includes(id) && !_piece.trim()) setTable(newTable);
   }
 
   const handleClick = (id, _piece) => {
     if (id !== localPiece && selectedPiece.trim()) {
-      const newTable = moveArrayElement(table, +(localPiece), +(id));
-      setTable(newTable);
+      move(id, _piece);
       moveReset();
     } else if (selectedPiece === _piece) {
       moveReset();
@@ -67,7 +73,7 @@ function Board() {
             isPieceWhite={isCapsLock(house)}
             selected={selectedPiece === house && localPiece === index}
           >
-            {piece[house[0]]}
+            {piece[house]}
           </House>
         );
       })

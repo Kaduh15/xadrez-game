@@ -7,11 +7,15 @@ function PlayProvider({ children }) {
   const [localPiece, setLocalPiece] = useState('');
   const [selectedPiece, setSelectedPiece] = useState('');
 
-  const handleLocalPiece = ((local) => setLocalPiece(local));
-  const handleSelectedPiece = ((local, force = false) => {
-    if (local.trim() || force) {
-      console.log('aqui');
-      setSelectedPiece(local);
+  const handleLocalPiece = ((local, force = false) => {
+    if (local || force) {
+      setLocalPiece(local);
+    }
+  });
+
+  const handleSelectedPiece = ((piece, force = false) => {
+    if (piece.trim() || force) {
+      setSelectedPiece(piece);
     }
   });
 
