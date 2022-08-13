@@ -9,16 +9,21 @@ function PlayProvider({ children }) {
 
   const handleLocalPiece = ((local) => setLocalPiece(local));
   const handleSelectedPiece = ((local, force = false) => {
-    console.log(local.trim() || force);
     if (local.trim() || force) {
       console.log('aqui');
       setSelectedPiece(local);
     }
   });
 
+  const moveReset = () => {
+    handleSelectedPiece('', true);
+    handleLocalPiece('', true);
+  };
+
   const state = {
     handleLocalPiece,
     handleSelectedPiece,
+    moveReset,
     selectedPiece,
     localPiece,
   };

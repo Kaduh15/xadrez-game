@@ -14,15 +14,14 @@ export const LayoutGrid = styled.div`
 
 export const House = styled.div`
   background-color: ${({ isWhite, selected }) => {
-    if (selected) return '#7bc';
-    if (isWhite) return '#d7d7';
-    return '#7171';
+    if (selected) return '#fff111';
+    if (isWhite) return '#fff';
+    return '#000';
   }};
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 5rem;
-  color: #fff111;
+  font-size: 4rem;
   width: 5rem;
   height: 5rem;
   cursor: pointer;

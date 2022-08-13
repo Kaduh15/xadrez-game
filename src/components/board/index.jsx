@@ -5,20 +5,21 @@ import piece from '../../services/piece';
 import { House, LayoutGrid } from './styles';
 
 const INITIAL_TABLE = [
-  't1', 'c1', 'b1', 'q', 'k', 'b2', 'c2', 't2',
-  'p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8',
+  ' ', 'w', ' ', 'w', ' ', 'w', ' ', 'w',
+  'w', ' ', 'w', ' ', 'w', ' ', 'w', ' ',
+  ' ', 'w', ' ', 'w', ' ', 'w', ' ', 'w',
   ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
   ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
-  ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
-  ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
-  'P1', 'P2', 'P3', 'P4', 'P5', 'P6', 'P7', 'P8',
-  'T1', 'C1', 'B1', 'K', 'Q', 'B2', 'C2', 'T2',
+  'b', ' ', 'b', ' ', 'b', ' ', 'b', ' ',
+  ' ', 'b', ' ', 'b', ' ', 'b', ' ', 'b',
+  'b', ' ', 'b', ' ', 'b', ' ', 'b', ' ',
 ];
 
 function Board() {
   const {
     handleLocalPiece,
     handleSelectedPiece,
+    moveReset,
     selectedPiece,
     localPiece,
   } = useContext(playContext);
@@ -40,14 +41,11 @@ function Board() {
 
   const handleClick = (id, _piece) => {
     if (id !== localPiece && selectedPiece.trim()) {
-      console.log(id);
       const newTable = moveArrayElement(table, +(localPiece), +(id));
       setTable(newTable);
-      handleSelectedPiece('', true);
-      handleLocalPiece('', true);
+      moveReset();
     } else if (selectedPiece === _piece) {
-      handleSelectedPiece('', true);
-      handleLocalPiece('', true);
+      moveReset();
     } else {
       handleLocalPiece(id);
       handleSelectedPiece(_piece);
