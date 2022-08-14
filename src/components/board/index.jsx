@@ -26,8 +26,7 @@ function Board() {
   const [table, setTable] = useState(INITIAL_TABLE);
   const [turn, setTurn] = useState('b');
   const possibleMoves = turn === 'w' ? [localPiece + 7, localPiece + 9] : [localPiece - 7, localPiece - 9];
-
-  console.log(possibleMoves);
+  let pieceKills = [];
 
   const toggleTrun = () => (turn === 'w' ? setTurn('b') : setTurn('w'));
 
@@ -45,9 +44,23 @@ function Board() {
     return newArray;
   };
 
+  const deleteArrayElement = (arr, idDelete) => {
+    const newArray = [...arr];
+    newArray.splice(idDelete, 1, ' ');
+
+    return newArray;
+  };
+
   const move = (id, _piece) => {
     const newTable = moveArrayElement(table, +(localPiece), +(id));
-    if (possibleMoves.includes(id) && !_piece.trim()) {
+    if (pieceKills.includes(id)) {
+      const difference = ((localPiece - id) / 2) + id;
+      const newTable2 = deleteArrayElement(newTable, difference);
+      setTable(newTable2);
+      toggleTrun();
+      return;
+    }
+    if ((possibleMoves.includes(id) || pieceKills.includes(id)) && !_piece.trim()) {
       setTable(newTable);
       toggleTrun();
     }
@@ -90,7 +103,8 @@ function Board() {
             }
           });
         const realKill = possibleMovesKill.filter((id) => !table[id].trim());
-        possibleMoves.splice(0, 0, ...realKill);
+        pieceKills = [...realKill];
+        console.log(pieceKills);
       }
     } else {
       mount.current = true;
