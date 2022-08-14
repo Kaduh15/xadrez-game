@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import playContext from '../../context/playContext';
 import piece from '../../services/piece';
@@ -24,11 +24,11 @@ function Board() {
     localPiece,
   } = useContext(playContext);
   const [table, setTable] = useState(INITIAL_TABLE);
-  const [turn, setTurn] = useState('w');
+  const [turn, setTurn] = useState('b');
+  const possibleMoves = turn === 'w' ? [localPiece + 7, localPiece + 9] : [localPiece - 7, localPiece - 9];
+  let pieceKills = [];
 
-  const toggleTrun = () => turn === 'w' ? setTurn('b') : setTurn('w');
-
-  const possibleMoves = [localPiece + 7, localPiece + 9, localPiece - 7, localPiece - 9];
+  const toggleTrun = () => (turn === 'w' ? setTurn('b') : setTurn('w'));
 
   const isCapsLock = (text) => text.toUpperCase() === text;
 
@@ -44,9 +44,23 @@ function Board() {
     return newArray;
   };
 
+  const deleteArrayElement = (arr, idDelete) => {
+    const newArray = [...arr];
+    newArray.splice(idDelete, 1, ' ');
+
+    return newArray;
+  };
+
   const move = (id, _piece) => {
     const newTable = moveArrayElement(table, +(localPiece), +(id));
-    if (possibleMoves.includes(id) && !_piece.trim()) {
+    if (pieceKills.includes(id)) {
+      const difference = ((localPiece - id) / 2) + id;
+      const newTable2 = deleteArrayElement(newTable, difference);
+      setTable(newTable2);
+      toggleTrun();
+      return;
+    }
+    if ((possibleMoves.includes(id) || pieceKills.includes(id)) && !_piece.trim()) {
       setTable(newTable);
       toggleTrun();
     }
@@ -65,6 +79,37 @@ function Board() {
   };
 
   let isWhite = false;
+  const mount = useRef(null);
+
+  useEffect(() => {
+    if (mount.current) {
+      if (selectedPiece.trim()) {
+        const pieceKill = possibleMoves
+          .filter((id) => table[id] !== turn && table[id].trim());
+        const possibleMovesKill = pieceKill
+          .map((id) => {
+            const difference = id - localPiece;
+            switch (difference) {
+              case 7:
+                return id + 7;
+              case -7:
+                return id - 7;
+              case 9:
+                return id + 9;
+              case -9:
+                return id - 9;
+              default:
+                return null;
+            }
+          });
+        const realKill = possibleMovesKill.filter((id) => !table[id].trim());
+        pieceKills = [...realKill];
+        console.log(pieceKills);
+      }
+    } else {
+      mount.current = true;
+    }
+  }, [selectedPiece]);
 
   return (
     <LayoutGrid>
@@ -79,7 +124,7 @@ function Board() {
             isPieceWhite={isCapsLock(house)}
             selected={selectedPiece === house && localPiece === index}
           >
-            {piece[house]}
+            {piece[house] || index}
           </House>
         );
       })
